@@ -24,8 +24,21 @@ This table should be called `songs` and have four properties with these exact na
 
 After successfully creating the table copy the code from [data.sql](data.sql) into MySQL Workbench, and run it to populate all of the data for the rest of the exercises. If you do not encounter any errors, then your answer is most likely correct.
 
+MY ANSWER: 
+CREATE TABLE songs (
+id INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(255) NOT NULL,
+length FLOAT NOT NULL,
+album_id INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (album_id) REFERENCES albums (id) 
+);
+
 ### 2. Select only the Names of all the Bands
 [Solution](solutions/2.sql)
+
+MY ANSWER: 
+SELECT DISTINCT name from bands;
 
 Change the name of the column the data returns to `Band Name`
 
@@ -39,6 +52,9 @@ Change the name of the column the data returns to `Band Name`
 | Van Canto         | 
 | Dream Theater     | 
 
+MY ANSWER: 
+SELECT DISTINCT name AS 'Band Name' from bands;
+
 ### 3. Select the Oldest Album
 [Solution](solutions/3.sql)
 
@@ -47,6 +63,12 @@ Make sure to only return one result from this query, and that you are not return
 | id | name                   | release_year | band_id | 
 |----|------------------------|--------------|---------| 
 | 5  | ...And Justice for All | 1988         | 2       | 
+
+MY ANSWER: 
+SELECT * FROM albums
+WHERE release_year IS NOT NULL
+ORDER BY release_year
+LIMIT 1;
 
 ### 4. Get all Bands that have Albums
 [Solution](solutions/4.sql)
@@ -64,6 +86,12 @@ Return the band name as `Band Name`.
 | Death             | 
 | Van Canto         | 
 
+MY ANSWER: 
+SELECT DISTINCT bands.name AS 'Band Name'
+FROM bands 
+JOIN albums ON bands.id = albums.band_id
+;
+
 ### 5. Get all Bands that have No Albums
 [Solution](solutions/5.sql)
 
@@ -74,6 +102,13 @@ Return the band name as `Band Name`.
 | Band Name     | 
 |---------------| 
 | Dream Theater | 
+
+MY ANSWER: 
+SELECT DISTINCT bands.name AS 'Band Name'
+FROM bands 
+LEFT JOIN albums ON bands.id = albums.band_id 
+WHERE albums.band_id IS NULL
+;
 
 ### 6. Get the Longest Album
 [Solution](solutions/6.sql)
