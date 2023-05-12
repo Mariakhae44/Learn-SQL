@@ -121,6 +121,14 @@ Return the album name as `Name`, the album release year as `Release Year`, and t
 |----------------|--------------|-------------------| 
 | Death Magnetic | 2008         | 74.76666593551636 | 
 
+MY ANSWER: 
+SELECT a.name AS 'Name', a.release_year AS 'Release Year', SUM(s.length) AS 'Duration'
+FROM albums AS a
+JOIN songs AS s ON a.id = s.album_id
+GROUP BY s.album_id
+ORDER BY Duration DESC
+LIMIT 1;
+
 ### 7. Update the Release Year of the Album with no Release Year
 [Solution](solutions/7.sql)
 
@@ -128,15 +136,33 @@ Set the release year to 1986.
 
 You may run into an error if you try to update the release year by using `release_year IS NULL` in the WHERE statement of your UPDATE. This is because MySQL Workbench by default will not let you update a table that has a primary key without using the primary key in the UPDATE statement. This is a good thing since you almost never want to update rows without using the primary key, so to get around this error make sure to use the primary key of the row you want to update in the WHERE of the UPDATE statement.
 
+MY ANSWER: 
+UPDATE albums 
+SET release_year = 1986
+WHERE id = 4;
+
 ### 8. Insert a record for your favorite Band and one of their Albums
 [Solution](solutions/8.sql)
 
 If you performed this correctly you should be able to now see that band and album in your tables.
 
+MY ANSWER:
+INSERT INTO bands (id, name)
+VALUES (8, 'Alabama Shakes');
+
+INSERT INTO albums (id, name, release_year, band_id)
+VALUES (19, 'Sound and Color', 2015, 8);
+
+
 ### 9. Delete the Band and Album you added in #8
 [Solution](solutions/9.sql)
 
 The order of how you delete the records is important since album has a foreign key to band.
+
+MY ANSWER:
+DELETE FROM albums WHERE id = 19;
+ 
+DELETE FROM bands WHERE id = 8;
 
 ### 10. Get the Average Length of all Songs
 [Solution](solutions/10.sql)
@@ -147,6 +173,10 @@ Return the average length as `Average Song Duration`.
 |-----------------------| 
 | 5.352472513259112     | 
 
+MY ANSWER: 
+
+SELECT AVG(length) AS 'Average Song Duration'
+ FROM songs;
 
 ### 11. Select the longest Song off each Album
 [Solution](solutions/11.sql)
@@ -174,6 +204,13 @@ Return the album name as `Album`, the album release year as `Release Year`, and 
 | Break the Silence           | 2011         | 6.15     | 
 | Tribe of Force              | 2010         | 8.38333  | 
 
+MU ANSWER: 
+ SELECT MAX(s.length) AS 'Song Duration', a.name AS 'Album Name'
+ FROM songs AS s
+ LEFT JOIN albums AS a ON s.album_id = a.id
+ GROUP BY album_id
+ ;
+ 
 ### 12. Get the number of Songs for each Band
 [Solution](solutions/12.sql)
 
